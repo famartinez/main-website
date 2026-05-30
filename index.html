@@ -3,143 +3,167 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Carolco AI Automation</title>
+  <title>Frank Martinez — Tech & Automation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #05070f;
-      --surface: rgba(255,255,255,0.04);
-      --border: rgba(255,255,255,0.08);
-      --accent1: #5b8cff;
-      --accent2: #a78bfa;
-      --text: #eef0f8;
-      --muted: #6e7591;
+      --bg: #080b12;
+      --surface: rgba(255,255,255,0.035);
+      --surface-hover: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.07);
+      --border-hover: rgba(255,255,255,0.14);
+      --accent: #60a5fa;
+      --accent-dim: rgba(96,165,250,0.12);
+      --accent-border: rgba(96,165,250,0.28);
+      --text: #e8eaf0;
+      --muted: #5a6070;
+      --muted2: #8a94a8;
     }
 
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    .glow-blob {
+    /* Subtle grid background */
+    body::before {
+      content: '';
       position: fixed;
-      width: 600px;
-      height: 600px;
-      border-radius: 50%;
-      filter: blur(120px);
-      opacity: 0.12;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 60px 60px;
       pointer-events: none;
       z-index: 0;
     }
 
-    .blob1 {
-      background: var(--accent1);
-      top: -200px;
-      left: -100px;
+    /* Glow orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.07;
     }
+    .orb1 { width: 500px; height: 500px; background: #3b82f6; top: -150px; right: -100px; }
+    .orb2 { width: 400px; height: 400px; background: #1d4ed8; bottom: 100px; left: -100px; }
 
-    .blob2 {
-      background: var(--accent2);
-      bottom: -200px;
-      right: -100px;
-    }
+    .wrapper { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 0 40px; }
 
-    .wrapper {
-      position: relative;
-      z-index: 1;
-    }
-
+    /* NAV */
     nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 28px 64px;
+      padding: 32px 0;
     }
 
     .logo {
-      font-weight: 700;
-      font-size: 17px;
-      letter-spacing: -0.5px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: -0.3px;
+      color: var(--text);
     }
 
-    .logo span {
-      background: linear-gradient(135deg, var(--accent1), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    .logo em {
+      font-style: normal;
+      color: var(--accent);
     }
 
-    .badge {
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
-      padding: 5px 12px;
-      border-radius: 100px;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      letter-spacing: 0.5px;
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
     }
 
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--muted2);
+      text-decoration: none;
+      letter-spacing: 0.3px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* HERO */
     .hero {
-      max-width: 800px;
-      margin: 100px auto 90px;
-      padding: 0 64px;
-      text-align: center;
+      padding: 100px 0 90px;
     }
 
-    .tag {
+    .status-pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
-      color: var(--accent1);
-      letter-spacing: 1px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.8px;
       text-transform: uppercase;
-      margin-bottom: 32px;
-      padding: 6px 16px;
-      border: 1px solid rgba(91, 140, 255, 0.25);
+      padding: 6px 14px 6px 10px;
+      border: 1px solid var(--accent-border);
       border-radius: 100px;
-      background: rgba(91, 140, 255, 0.06);
+      background: var(--accent-dim);
+      margin-bottom: 40px;
     }
 
-    .dot {
-      width: 5px;
-      height: 5px;
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
-      background: var(--accent1);
-      animation: pulse 2s ease-in-out infinite;
+      background: var(--accent);
+      animation: pulse 2.2s ease-in-out infinite;
+      flex-shrink: 0;
     }
 
     @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
     }
 
-    h1 {
-      font-size: 72px;
-      font-weight: 700;
-      line-height: 1.0;
-      letter-spacing: -2.5px;
-      margin-bottom: 44px;
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(52px, 8vw, 80px);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -3px;
+      margin-bottom: 32px;
+      color: var(--text);
     }
 
-    h1 .grad {
-      background: linear-gradient(135deg, var(--accent1) 0%, var(--accent2) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    .hero h1 .line2 {
+      color: var(--muted);
     }
 
-    .buttons {
+    .hero-bio {
+      font-size: 17px;
+      font-weight: 300;
+      color: var(--muted2);
+      line-height: 1.7;
+      max-width: 540px;
+      margin-bottom: 48px;
+    }
+
+    .hero-bio strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .cta-row {
       display: flex;
-      gap: 10px;
-      justify-content: center;
+      gap: 12px;
       flex-wrap: wrap;
     }
 
@@ -147,133 +171,241 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 12px 22px;
+      padding: 11px 20px;
       border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 500;
       text-decoration: none;
-      transition: all 0.2s;
-      font-family: 'Space Grotesk', sans-serif;
-      letter-spacing: 0.2px;
+      transition: all 0.18s;
+      letter-spacing: 0.1px;
+      cursor: pointer;
+      border: none;
     }
 
-    .btn svg { width: 15px; height: 15px; fill: currentColor; flex-shrink: 0; }
+    .btn svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
 
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent1), var(--accent2));
-      color: white;
+    .btn-accent {
+      background: var(--accent);
+      color: #fff;
     }
-
-    .btn-primary:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
-    }
+    .btn-accent:hover { opacity: 0.88; transform: translateY(-1px); }
 
     .btn-ghost {
       background: var(--surface);
-      color: var(--text);
+      color: var(--muted2);
       border: 1px solid var(--border);
     }
-
     .btn-ghost:hover {
-      border-color: rgba(255,255,255,0.18);
-      background: rgba(255,255,255,0.07);
+      background: var(--surface-hover);
+      border-color: var(--border-hover);
+      color: var(--text);
       transform: translateY(-1px);
     }
 
-    .cards {
-      max-width: 880px;
-      margin: 0 auto 100px;
-      padding: 0 64px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 80px 0;
     }
 
-    .card {
+    /* SECTION LABEL */
+    .section-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+
+    /* SKILL GRID */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 80px;
+    }
+
+    .skill-chip {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 18px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 28px 24px;
-      transition: border-color 0.2s;
+      border-radius: 10px;
+      transition: border-color 0.2s, background 0.2s;
     }
 
-    .card:hover {
-      border-color: rgba(255,255,255,0.16);
+    .skill-chip:hover {
+      border-color: var(--border-hover);
+      background: var(--surface-hover);
     }
 
-    .card-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      background: rgba(91, 140, 255, 0.12);
+    .skill-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 7px;
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-border);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 16px;
+      flex-shrink: 0;
     }
 
-    .card-icon svg {
-      width: 18px;
-      height: 18px;
-      fill: var(--accent1);
+    .skill-icon svg {
+      width: 15px;
+      height: 15px;
+      fill: var(--accent);
     }
 
-    .card h3 {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      letter-spacing: -0.3px;
-    }
-
-    .card p {
+    .skill-name {
       font-size: 13px;
-      color: var(--muted);
-      line-height: 1.6;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.3;
     }
 
-    footer {
-      border-top: 1px solid var(--border);
-      text-align: center;
-      padding: 28px;
+    .skill-sub {
       font-size: 11px;
       color: var(--muted);
-      font-family: 'Space Mono', monospace;
+      margin-top: 2px;
+    }
+
+    /* LINKS / CARDS */
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+      margin-bottom: 80px;
+    }
+
+    .link-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.18s;
+      color: var(--text);
+    }
+
+    .link-card:hover {
+      border-color: var(--border-hover);
+      background: var(--surface-hover);
+      transform: translateY(-1px);
+    }
+
+    .link-card-inner {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .link-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .link-icon svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--muted2);
+    }
+
+    .link-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .link-sublabel {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .arrow-icon {
+      color: var(--muted);
+      font-size: 18px;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .link-card:hover .arrow-icon { color: var(--accent); transform: translateX(2px); }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--muted);
       letter-spacing: 0.5px;
     }
 
-    @media (max-width: 680px) {
-      nav { padding: 20px 24px; }
-      .hero { padding: 0 24px; margin: 70px auto 60px; }
-      h1 { font-size: 44px; letter-spacing: -1.5px; }
-      .cards { grid-template-columns: 1fr; padding: 0 24px; }
+    @media (max-width: 640px) {
+      .wrapper { padding: 0 20px; }
+      nav { padding: 24px 0; }
+      .nav-links { gap: 20px; }
+      .hero { padding: 60px 0 60px; }
+      .hero h1 { letter-spacing: -2px; }
+      .footer-right { display: none; }
     }
   </style>
 </head>
 <body>
 
-<div class="glow-blob blob1"></div>
-<div class="glow-blob blob2"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
 
 <div class="wrapper">
 
   <nav>
-    <div class="logo">Carolco <span>AI</span></div>
-    <div class="badge">v2026</div>
+    <div class="logo">Frank<em>.</em></div>
+    <ul class="nav-links">
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#links">Links</a></li>
+      <li><a href="mailto:famartinez@gmail.com">Contact</a></li>
+    </ul>
   </nav>
 
-  <div class="hero">
-    <div class="tag">
-      <span class="dot"></span>
-      AI Automation for Small Business
+  <section class="hero">
+    <div class="status-pill">
+      <span class="pulse-dot"></span>
+      Open to new opportunities
     </div>
 
-    <h1>Save time.<br><span class="grad">Grow faster.</span></h1>
+    <h1>
+      Frank<br>
+      <span class="line2">Martinez.</span>
+    </h1>
 
-    <div class="buttons">
-      <a class="btn btn-primary" href="mailto:famartinez@gmail.com">
+    <p class="hero-bio">
+      Tech professional transitioning into <strong>integration engineering &amp; technical support</strong>.
+      Building AI-powered tools, automations, and systems that move fast and scale.
+      Based in the <strong>Bay Area</strong>.
+    </p>
+
+    <div class="cta-row">
+      <a class="btn btn-accent" href="mailto:famartinez@gmail.com">
         <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-        Contact Me
+        Get in touch
       </a>
       <a class="btn btn-ghost" href="https://www.linkedin.com/in/frankmartinez/" target="_blank">
         <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
@@ -283,50 +415,177 @@
         <svg viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
         GitHub
       </a>
-      <a class="btn btn-ghost" href="https://account.venmo.com/u/paythetank" target="_blank">
-        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-        Buy Me a Coffee
-      </a>
-      <a class="btn btn-ghost" href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTr1SmmcRUvWDwWJionXJ4Rkhk-kBnWFbxaohYl3GGymPmpZ4LyFv5mU8Btwd2AywG8Iwh-DadBoMZh/pubhtml?gid=971010990&single=true" target="_blank">
-        <svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
-        Trainer Contact List
-      </a>
-      <a class="btn btn-ghost" href="https://photos.app.goo.gl/KPKcivDcE2QK7Bxy6" target="_blank">
-        <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-        Photo Album
-      </a>
-      <a class="btn btn-primary" href="https://martinezfrank.wordpress.com/" target="_blank">
-        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM3.87 9h2.52c.28 1.59.74 3.08 1.35 4.45L5.22 15.4A8.12 8.12 0 0 1 3.87 9zm8.13 9.93c-.97-.28-1.96-1.33-2.67-3.03-.29-.69-.54-1.46-.74-2.27h6.82c-.2.81-.45 1.58-.74 2.27-.71 1.7-1.7 2.75-2.67 3.03zm0-9.93h3.41c-.18.87-.42 1.69-.71 2.44C14.19 12.58 13.15 13.7 12 14c-1.15-.3-2.19-1.42-2.7-2.56-.29-.75-.53-1.57-.71-2.44H12zm6.78 6.4-2.52-1.95c.61-1.37 1.07-2.86 1.35-4.45h2.52a8.12 8.12 0 0 1-1.35 6.4zM20.13 7h-2.66c-.35-1.47-.87-2.78-1.52-3.82A8.14 8.14 0 0 1 20.13 7zM8.05 3.18C7.4 4.22 6.88 5.53 6.53 7H3.87a8.14 8.14 0 0 1 4.18-3.82z"/></svg>
-        My Blog
-      </a>
     </div>
-  </div>
+  </section>
 
-  <div class="cards">
-    <div class="card">
-      <div class="card-icon">
-        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
-      </div>
-      <h3>What We Build</h3>
-      <p>AI agents, automation tools, and websites for small businesses.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">
-        <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-      </div>
-      <h3>Who We Help</h3>
-      <p>Local businesses, gyms, staffing agencies, and solo entrepreneurs.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">
-        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-      </div>
-      <h3>Our Promise</h3>
-      <p>Simple, affordable, and practical — no tech jargon.</p>
-    </div>
-  </div>
+  <hr class="divider">
 
-  <footer>© 2026 CAROLCO AI AUTOMATION · FRANK MARTINEZ</footer>
+  <section id="skills">
+    <div class="section-label">What I work with</div>
+    <div class="skills-grid">
+
+      <div class="skill-chip">
+        <div class="skill-icon">
+          <svg viewBox="0 0 24 24"><path d="M9.585 3C6.513 3 4.207 4.607 4.207 6.61v1.67h5.378v.557H2.721C.89 8.837 0 10.73 0 12.951c0 2.22 1.204 4.342 2.721 4.342h1.548v-2.082c0-1.817 1.46-3.42 3.314-3.42h5.361c1.613 0 2.928-1.317 2.928-2.94V6.61C15.872 4.607 13.566 3 10.494 3H9.585zm-.87 1.583c.527 0 .955.428.955.955 0 .527-.428.956-.955.956-.527 0-.956-.429-.956-.956 0-.527.429-.955.956-.955zM15.872 8.837v2.082c0 1.817-1.46 3.42-3.314 3.42H7.197c-1.613 0-2.928 1.317-2.928 2.94v2.24C4.269 21.52 6.575 23 9.647 23h.87c3.072 0 5.378-1.607 5.378-3.61v-1.67H10.517v-.557h6.863C19.11 17.163 20 15.27 20 13.049c0-2.22-1.204-4.212-2.721-4.212h-1.407zm-3.457 7.538c.527 0 .956.429.956.956 0 .527-.429.955-.956.955-.527 0-.955-.428-.955-.955 0-.527.428-.956.955-.956z"/></svg>
+        </div>
+        <div>
+          <div class="skill-name">Python</div>
+          <div class="skill-sub">Scripting & automation</div>
+        </div>
+      </div>
+
+      <div class="skill-chip">
+        <div class="skill-icon">
+          <svg viewBox="0 0 24 24"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+        </div>
+        <div>
+          <div class="skill-name">JavaScript</div>
+          <div class="skill-sub">Full-stack dev</div>
+        </div>
+      </div>
+
+      <div class="skill-chip">
+        <div class="skill-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zm-7 9.59L12 17l7-4.41V14l-7 3.86L5 14v-1.41zM12 19.14L5 15.55V17l7 3.86L19 17v-1.45L12 19.14z"/></svg>
+        </div>
+        <div>
+          <div class="skill-name">AI & Automation</div>
+          <div class="skill-sub">Claude API, n8n, Zapier</div>
+        </div>
+      </div>
+
+      <div class="skill-chip">
+        <div class="skill-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18-.21 0-.41-.06-.57-.18l-7.9-4.44A.991.991 0 0 1 3 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18.21 0 .41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9z"/></svg>
+        </div>
+        <div>
+          <div class="skill-name">iPaaS / Boomi</div>
+          <div class="skill-sub">Integration engineering</div>
+        </div>
+      </div>
+
+      <div class="skill-chip">
+        <div class="skill-icon">
+          <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm3 11c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
+        </div>
+        <div>
+          <div class="skill-name">SSO / SAML / OAuth</div>
+          <div class="skill-sub">Auth & identity</div>
+        </div>
+      </div>
+
+      <div class="skill-chip">
+        <div class="skill-icon">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+        </div>
+        <div>
+          <div class="skill-name">Technical Support</div>
+          <div class="skill-sub">Enterprise SaaS</div>
+        </div>
+      </div>
+
+      <div class="skill-chip">
+        <div class="skill-icon">
+          <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        </div>
+        <div>
+          <div class="skill-name">Recruiting & Ops</div>
+          <div class="skill-sub">Staffing, admin</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="links">
+    <div class="section-label">Find me online</div>
+    <div class="links-grid">
+
+      <a class="link-card" href="https://www.linkedin.com/in/frankmartinez/" target="_blank">
+        <div class="link-card-inner">
+          <div class="link-icon">
+            <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+          </div>
+          <div>
+            <div class="link-label">LinkedIn</div>
+            <div class="link-sublabel">Connect with me</div>
+          </div>
+        </div>
+        <span class="arrow-icon">→</span>
+      </a>
+
+      <a class="link-card" href="https://github.com/famartinez/" target="_blank">
+        <div class="link-card-inner">
+          <div class="link-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+          </div>
+          <div>
+            <div class="link-label">GitHub</div>
+            <div class="link-sublabel">Projects & code</div>
+          </div>
+        </div>
+        <span class="arrow-icon">→</span>
+      </a>
+
+      <a class="link-card" href="https://martinezfrank.wordpress.com/" target="_blank">
+        <div class="link-card-inner">
+          <div class="link-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+          </div>
+          <div>
+            <div class="link-label">Blog</div>
+            <div class="link-sublabel">Longevity, tech & startups</div>
+          </div>
+        </div>
+        <span class="arrow-icon">→</span>
+      </a>
+
+      <a class="link-card" href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTr1SmmcRUvWDwWJionXJ4Rkhk-kBnWFbxaohYl3GGymPmpZ4LyFv5mU8Btwd2AywG8Iwh-DadBoMZh/pubhtml?gid=971010990&single=true" target="_blank">
+        <div class="link-card-inner">
+          <div class="link-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+          </div>
+          <div>
+            <div class="link-label">Trainer Contact List</div>
+            <div class="link-sublabel">Boxing network</div>
+          </div>
+        </div>
+        <span class="arrow-icon">→</span>
+      </a>
+
+      <a class="link-card" href="https://photos.app.goo.gl/KPKcivDcE2QK7Bxy6" target="_blank">
+        <div class="link-card-inner">
+          <div class="link-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+          </div>
+          <div>
+            <div class="link-label">Photo Album</div>
+            <div class="link-sublabel">Google Photos</div>
+          </div>
+        </div>
+        <span class="arrow-icon">→</span>
+      </a>
+
+      <a class="link-card" href="https://account.venmo.com/u/paythetank" target="_blank">
+        <div class="link-card-inner">
+          <div class="link-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+          </div>
+          <div>
+            <div class="link-label">Buy Me a Coffee</div>
+            <div class="link-sublabel">Venmo · @paythetank</div>
+          </div>
+        </div>
+        <span class="arrow-icon">→</span>
+      </a>
+
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 FRANK MARTINEZ</span>
+    <span class="footer-right">SOUTH SAN FRANCISCO, CA</span>
+  </footer>
 
 </div>
 </body>
