@@ -61,8 +61,10 @@ app.get('/api/user-status', (req, res) => {
 
 
 // 4. Authentication Routes
-app.get('/login', passport.authenticate('google', { scope: ['profile', 'email'] }));
-
+app.get('/login', passport.authenticate('google', { 
+  scope: ['profile', 'email'],
+  prompt: 'select_account' // <-- THIS FORCES GOOGLE TO ASK EVERY TIME
+}));
 app.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
