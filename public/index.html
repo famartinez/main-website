@@ -81,6 +81,12 @@
       color: var(--accent);
     }
 
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
     .nav-links {
       display: flex;
       gap: 32px;
@@ -97,6 +103,28 @@
     }
 
     .nav-links a:hover { color: var(--text); }
+
+    /* Google Sign-In Custom Layouts */
+    .auth-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .logout-link {
+      font-size: 11px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .logout-link:hover { color: #ef4444; }
 
     /* HERO */
     .hero {
@@ -361,7 +389,8 @@
 
     @media (max-width: 640px) {
       .wrapper { padding: 0 20px; }
-      nav { padding: 24px 0; }
+      nav { padding: 24px 0; flex-direction: column; gap: 16px; align-items: flex-start; }
+      .nav-right { width: 100%; justify-content: space-between; gap: 16px; }
       .nav-links { gap: 20px; }
       .hero { padding: 60px 0 60px; }
       .hero h1 { letter-spacing: -2px; }
@@ -378,11 +407,21 @@
 
   <nav>
     <div class="logo">Frank<em>.</em></div>
-    <ul class="nav-links">
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#links">Links</a></li>
-      <li><a href="mailto:famartinez@gmail.com">Contact</a></li>
-    </ul>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#links">Links</a></li>
+        <li><a href="mailto:famartinez@gmail.com">Contact</a></li>
+      </ul>
+      
+      <!-- Dynamic Google Authentication UI Mount Point -->
+      <div class="auth-container" id="auth-section">
+        <a href="/login" class="btn btn-ghost" style="padding: 6px 14px; font-size: 12px; border-radius: 6px;">
+          <svg viewBox="0 0 24 24" style="width:12px; height:12px; margin-right:4px;"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22c-.22-.67-.35-1.37-.35-2.09z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+          Sign In
+        </a>
+      </div>
+    </div>
   </nav>
 
   <section class="hero">
@@ -588,5 +627,26 @@
   </footer>
 
 </div>
+
+<!-- Auth UI Script -->
+<script>
+  // On page load, ask the Node backend if the user is authenticated
+  fetch('/api/user-status')
+    .then(response => response.json())
+    .then(data => {
+      const authSection = document.getElementById('auth-section');
+      if (data.isAuthenticated && data.user) {
+        // Swap out the sign-in button for their profile information safely
+        authSection.innerHTML = `
+          <div class="user-profile">
+            <span>Hi, <strong>${data.user.displayName || 'User'}</strong></span>
+            <a href="/logout" class="logout-link">Log out</a>
+          </div>
+        `;
+      }
+    })
+    .catch(err => console.log('Auth check skipped or failed:', err));
+</script>
+
 </body>
 </html>
