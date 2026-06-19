@@ -10,14 +10,16 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #080b12;
+      --bg: #0a0a0f;
       --surface: rgba(255,255,255,0.035);
       --surface-hover: rgba(255,255,255,0.06);
       --border: rgba(255,255,255,0.07);
       --border-hover: rgba(255,255,255,0.14);
-      --accent: #60a5fa;
-      --accent-dim: rgba(96,165,250,0.12);
-      --accent-border: rgba(96,165,250,0.28);
+      --accent: #22d3ee;
+      --accent-dim: rgba(34,211,238,0.10);
+      --accent-border: rgba(34,211,238,0.25);
+      --accent-glow: rgba(34,211,238,0.15);
+      --green: #22c55e;
       --text: #e8eaf0;
       --muted: #5a6070;
       --muted2: #8a94a8;
@@ -55,8 +57,8 @@
       z-index: 0;
       opacity: 0.07;
     }
-    .orb1 { width: 500px; height: 500px; background: #3b82f6; top: -150px; right: -100px; }
-    .orb2 { width: 400px; height: 400px; background: #1d4ed8; bottom: 100px; left: -100px; }
+    .orb1 { width: 500px; height: 500px; background: #22d3ee; top: -150px; right: -100px; }
+    .orb2 { width: 400px; height: 400px; background: #0891b2; bottom: 100px; left: -100px; }
 
     .wrapper { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 0 40px; }
 
@@ -148,17 +150,18 @@
     }
 
     .pulse-dot {
-      width: 6px;
-      height: 6px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background: var(--accent);
-      animation: pulse 2.2s ease-in-out infinite;
+      background: var(--green);
       flex-shrink: 0;
+      animation: pulse-ring 2.2s ease-out infinite;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.8); }
+    @keyframes pulse-ring {
+      0%   { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+      70%  { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
     }
 
     .hero h1 {
@@ -168,11 +171,10 @@
       line-height: 0.95;
       letter-spacing: -3px;
       margin-bottom: 32px;
-      color: var(--text);
-    }
-
-    .hero h1 .line2 {
-      color: var(--muted);
+      background: linear-gradient(180deg, #ffffff 0%, #22d3ee 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .hero-bio {
@@ -265,12 +267,14 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 10px;
-      transition: border-color 0.2s, background 0.2s;
+      transition: border-color 0.22s, background 0.22s, transform 0.22s, box-shadow 0.22s;
     }
 
     .skill-chip:hover {
-      border-color: var(--border-hover);
+      border-color: var(--accent-border);
       background: var(--surface-hover);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 28px var(--accent-glow), 0 0 0 1px var(--accent-border);
     }
 
     .skill-icon {
